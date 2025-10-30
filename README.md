@@ -30,10 +30,5 @@ This project demonstrates modern Android development best practices with a clean
 
 ---
 
-## 📸 Screenshots (optional)
-*(Add your app screenshots here when available)*  
-```md
-![App Screenshot](link-to-your-screenshot)
-
 
 
