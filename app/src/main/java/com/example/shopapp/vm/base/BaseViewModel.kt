@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel: ViewModel() {
     protected fun <T> loadDate(
-        apiResponse: suspend () -> ApiResponse<T>, stateSetter: (DataUiState<T>) -> Unit
+        apiResponse: suspend () -> ApiResponse<T>,
+        stateSetter: (DataUiState<T>) -> Unit
     ) {
         stateSetter(DataUiState(isLoading = true))
         viewModelScope.launch {

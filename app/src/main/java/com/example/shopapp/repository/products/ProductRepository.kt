@@ -16,7 +16,7 @@ class ProductRepository @Inject constructor(private val api: ProductApi) : BaseR
         safeApiCall { api.getProductById(id) }
 
 
-    suspend fun getProductByCategoryId(
+    suspend fun getProductsByCategoryId(
         id: Long, pageIndex: Int, pageSize: Int
     ): ApiResponse<Product> = safeApiCall {
         api.getProductByCategoryId(id, pageIndex, pageSize)

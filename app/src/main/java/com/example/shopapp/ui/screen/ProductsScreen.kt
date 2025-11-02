@@ -20,16 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.shopapp.model.products.Product
+import androidx.navigation.NavHostController
 import com.example.shopapp.ui.component.AnimateSlideIn
 import com.example.shopapp.ui.component.CostumeCard
-import com.example.shopapp.ui.component.ShowViewByState
 import com.example.shopapp.vm.ProductsViewModel
 
 @Composable
 fun ProductsScreen(
     catId: Long,
     title: String,
+    navController: NavHostController,
     vm: ProductsViewModel = hiltViewModel()
 ) {
     LaunchedEffect(catId) { vm.loadProducts(catId) }
@@ -41,29 +41,31 @@ fun ProductsScreen(
             lastVisible >= totalItemsCount - 1
         }
     }
-    LaunchedEffect(shouldLoadMore) { vm.loadProducts(catId) }
+    LaunchedEffect(shouldLoadMore) {
+        if (!vm.products.isLoading && shouldLoadMore)
+            vm.loadProducts(catId)
+    }
     Column(
         Modifier
             .fillMaxSize()
             .padding(10.dp)
     ) {
         Text(title, fontWeight = FontWeight.Bold, fontSize = 26.sp)
-        ShowViewByState(vm.products) { products: List<Product> ->
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                itemsIndexed(products) { index, product ->
-                    AnimateSlideIn(index * 100) {
-                        CostumeCard(
-                            Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            product.image,
-                            product.title
-                        )
-                    }
+
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            itemsIndexed(vm.products.data ?: listOf()) { index, product ->
+                AnimateSlideIn(index * 100) {
+                    CostumeCard(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        product.image,
+                        product.title
+                    )
                 }
             }
         }
