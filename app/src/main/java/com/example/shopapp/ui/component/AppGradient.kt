@@ -9,14 +9,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun AppGradient() {
+fun AppGradient(modifier: Modifier = Modifier) {
     val colors = listOf(
-        Color.Transparent,
-        Color.Black.copy(alpha = 0.5f),
-        Color.Black.copy(alpha = 0.85f)
+        Color.Transparent, Color.Black.copy(alpha = 0.5f), Color.Black.copy(alpha = 0.85f)
     )
     Box(
-        Modifier
+        modifier
             .fillMaxSize()
             .background(Brush.verticalGradient(colors))
     )

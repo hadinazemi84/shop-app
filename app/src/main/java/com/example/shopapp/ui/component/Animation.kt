@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 @Composable
-fun AnimateSlideIn(delay: Int, content: @Composable () -> Unit) {
+fun AnimatedSlideIn(delay: Int, content: @Composable () -> Unit) {
     val isVisible =
         remember { MutableTransitionState(false).apply { targetState = true } }
     AnimatedVisibility(

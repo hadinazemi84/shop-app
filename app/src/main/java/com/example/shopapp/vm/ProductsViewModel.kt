@@ -22,26 +22,23 @@ class ProductsViewModel @Inject constructor(private val productRepository: Produ
     fun loadProducts(categoryId: Long) {
         if (products.isLoading || endReached) return
 
-        loadDate(
-            apiResponse = {
-                productRepository.getProductsByCategoryId(categoryId, pageIndex, pageSize)
-            },
-            stateSetter = { productsState: DataUiState<Product> ->
-                if (productsState.isLoading) {
-                    products = products.copy(isLoading = true)
+        loadDate(apiResponse = {
+            productRepository.getProductsByCategoryId(categoryId, pageIndex, pageSize)
+        }, stateSetter = { productsState: DataUiState<Product> ->
+            if (productsState.isLoading) {
+                products = products.copy(isLoading = true)
+            } else {
+                if (!productsState.data.isNullOrEmpty()) {
+                    pageIndex++
+                    val current = products.data?.toMutableList() ?: mutableListOf()
+                    current.addAll(productsState.data)
+                    products = products.copy(data = current, isLoading = false)
                 } else {
-                    if (!productsState.data.isNullOrEmpty()) {
-                        pageIndex++
-                        val current = products.data?.toMutableList() ?: mutableListOf()
-                        current.addAll(productsState.data)
-                        products = products.copy(data = current, isLoading = false)
-                    } else {
-                        endReached = true
-                    }
+                    endReached = true
                 }
-
             }
-        )
+
+        })
 
 
     }

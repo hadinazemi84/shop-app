@@ -17,7 +17,7 @@ fun CategoriesRow(vm: HomeViewModel, navController: NavHostController) {
     ShowViewByState(vm.categories) { productCategories ->
         LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             itemsIndexed(productCategories) { index, item ->
-                AnimateSlideIn(index * 100) {
+                AnimatedSlideIn(index * 100) {
                     CategoryItem(item) {
                         navController.navigate("products/${item.id}/${item.title}")
                     }

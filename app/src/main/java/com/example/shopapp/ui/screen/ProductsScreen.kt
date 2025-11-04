@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.shopapp.ui.component.AnimateSlideIn
+import com.example.shopapp.ui.component.AnimatedSlideIn
 import com.example.shopapp.ui.component.CostumeCard
 import com.example.shopapp.vm.ProductsViewModel
 
@@ -58,7 +58,7 @@ fun ProductsScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(vm.products.data ?: listOf()) { index, product ->
-                AnimateSlideIn(index * 100) {
+                AnimatedSlideIn(index * 100) {
                     CostumeCard(
                         Modifier
                             .fillMaxWidth()
