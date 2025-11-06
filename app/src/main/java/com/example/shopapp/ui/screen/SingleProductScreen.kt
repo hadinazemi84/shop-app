@@ -6,14 +6,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -29,25 +35,23 @@ import com.example.shopapp.ui.component.ProductColorsRow
 import com.example.shopapp.ui.component.ProductSizesRow
 import com.example.shopapp.ui.utility.formatPrice
 import com.example.shopapp.vm.SingleProductViewModel
+import com.example.shopapp.R
+import com.example.shopapp.ui.component.PriceText
+import com.example.shopapp.vm.BasketViewmodel
 
 @Composable
 fun SingleProductScreen(
     productId: Long,
     innerPadding: PaddingValues,
     navController: NavHostController,
-    vm: SingleProductViewModel = hiltViewModel()
+    vm: SingleProductViewModel = hiltViewModel(),
+    basketViewModel: BasketViewmodel = hiltViewModel()
 ) {
-    val price = buildAnnotatedString {
-        withStyle(SpanStyle(fontSize = 22.sp, color = Color.White)) {
-            append("${formatPrice(vm.product?.price?.toLong() ?: 0L)} ")
-        }
 
-        withStyle(SpanStyle(fontSize = 15.sp, color = Color.LightGray)) {
-            append("Toman")
-        }
-    }
+
     LaunchedEffect(productId) { vm.loadProductById(productId) }
     Box(modifier = Modifier.fillMaxSize()) {
+
         AppImage("${vm.product?.image}", "${vm.product?.title}")
         AppGradient(Modifier.align(Alignment.BottomCenter))
         Box(
@@ -55,6 +59,13 @@ fun SingleProductScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.align(Alignment.TopStart)
+            ) {
+                Icon(painterResource(R.drawable.ic_arrow_back), "")
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -70,16 +81,8 @@ fun SingleProductScreen(
                     )
                 }
                 Spacer(Modifier.height(30.dp))
-                AnimatedSlideIn(600) { Text(price) }
+                AnimatedSlideIn(600) { PriceText(vm.product?.price ?: 0L) }
                 Spacer(Modifier.height(30.dp))
-                AnimatedSlideIn(800) {
-                    Text(
-                        "Size",
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 23.sp,
-                        color = Color.White
-                    )
-                }
                 Spacer(Modifier.height(30.dp))
                 ProductSizesRow(vm)
                 Spacer(Modifier.height(30.dp))
@@ -91,6 +94,25 @@ fun SingleProductScreen(
                         fontSize = 15.sp,
                         color = Color.LightGray
                     )
+                }
+                AnimatedSlideIn(2300) {
+                    Button(
+                        onClick = {
+                            basketViewModel.addToBasket(
+                                vm.product,
+                                vm.selectedColor,
+                                vm.selectedSize
+                            )
+                            navController.navigate("basket")
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text("Add to basket")
+                    }
                 }
             }
         }

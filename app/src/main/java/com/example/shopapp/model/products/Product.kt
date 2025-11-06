@@ -5,7 +5,7 @@ data class Product(
     var title: String?,
     var image: String?,
     var description: String?,
-    var price: Int?,
+    var price: Long?,
     var addDate: String?,
     var visitCount: Int?,
     var category: ProductCategory? = null,

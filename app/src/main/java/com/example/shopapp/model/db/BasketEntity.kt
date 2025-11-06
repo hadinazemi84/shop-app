@@ -10,7 +10,7 @@ data class BasketEntity(
     val productId: Long,
     val sizeId: Long,
     val colorId: Long,
-    val quantity: Int,
+    var quantity: Int,
     val image: String?,
     val title: String?,
     val price: Long?,

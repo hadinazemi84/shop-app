@@ -34,11 +34,11 @@ fun AppImage(model: String, description: String) {
 */
 
 @Composable
-fun AppImage(model: String, description: String) {
+fun AppImage(model: String, description: String, modifier: Modifier = Modifier) {
 
 
     SubcomposeAsyncImage(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         model = model,
         contentDescription = description,
         contentScale = ContentScale.Crop,

@@ -8,14 +8,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.shopapp.R
+import com.example.shopapp.vm.BasketViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavbar() {
+fun TopNavbar(navController: NavHostController, basketVm: BasketViewmodel = hiltViewModel()) {
+    val basket = basketVm.basketItems.observeAsState()
     TopAppBar(
         title = {
             Text(
@@ -26,10 +31,10 @@ fun TopNavbar() {
         },
         actions = {
 
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate("basket")}) {
                 BadgedBox(badge = {
-                    Badge() {
-                        Text("2")
+                    Badge {
+                        Text("${basket.value?.size ?: 0}")
                     }
                 }) {
                     Icon(painterResource(R.drawable.ic_shopping_cart), "User")

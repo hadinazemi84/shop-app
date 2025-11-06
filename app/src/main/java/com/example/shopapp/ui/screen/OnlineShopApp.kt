@@ -28,7 +28,7 @@ fun OnlineShopApp() {
     val isFullScreen = checkFullScreen(navController)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { if (!isFullScreen) TopNavbar() }) { innerPadding ->
+        topBar = { if (!isFullScreen) TopNavbar(navController) }) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
@@ -46,12 +46,18 @@ fun OnlineShopApp() {
                     val title = backStackEntry.arguments?.getString("title") ?: "Title"
                     ProductsScreen(id, title, navController)
                 }
-                composable("product/{id}",
+                composable(
+                    "product/{id}",
                     listOf(navArgument("id") {
-                    type = NavType.LongType
-                })) { backStackEntry ->
+                        type = NavType.LongType
+                    })
+                ) { backStackEntry ->
                     val productId = backStackEntry.arguments?.getLong("id") ?: 0L
                     SingleProductScreen(productId, innerPadding, navController)
+                }
+
+                composable(route = "basket") {
+                    BasketScreen(navController)
                 }
             }
         }

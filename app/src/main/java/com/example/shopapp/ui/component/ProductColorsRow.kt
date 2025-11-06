@@ -5,35 +5,47 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import com.example.shopapp.R
 import com.example.shopapp.model.products.ProductColor
 import com.example.shopapp.vm.SingleProductViewModel
-import com.example.shopapp.R
 
 @Composable
 fun ProductColorsRow(vm: SingleProductViewModel) {
-    var colorIndex by remember { mutableIntStateOf(0) }
+
+
+    AnimatedSlideIn(1000) {
+        Text(
+            "Color",
+            fontWeight = FontWeight.Medium,
+            fontSize = 23.sp,
+            color = Color.White
+        )
+    }
+    Spacer(Modifier.height(5.dp))
     LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         itemsIndexed(vm.product?.colors ?: listOf()) { index, color ->
+            if (index == 0) vm.selectedColor = color
             AnimatedSlideIn(1000 + (index * 100)) {
-                ItemColor(color, index == colorIndex) {
-                    colorIndex = index
+                ItemColor(color, vm.selectedColor == color) {
+                    vm.selectedColor = color
                 }
             }
         }
