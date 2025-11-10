@@ -17,18 +17,15 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class BasketViewmodel @Inject constructor(private val repository: BasketRepository) : ViewModel() {
-    private val _basketItems = MutableLiveData<List<BasketEntity>>()
+    private val _basketItems = MutableLiveData<List<BasketEntity>>(emptyList())
     val basketItems: LiveData<List<BasketEntity>> = _basketItems
-    private val _totalPrice = MutableLiveData<Long>(0)
-    private val totalPrice:LiveData<Long> = _totalPrice
 
-    private fun getTotalPrice(){
-        repository.getTotalPrice()
-    }
     private fun getBasketItems() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch() {
             _basketItems.postValue(repository.getBasketItems())
+
         }
+
     }
 
     fun incrementQuantity(item: BasketEntity) {
@@ -77,8 +74,10 @@ class BasketViewmodel @Inject constructor(private val repository: BasketReposito
                         price = product.price
                     )
                 )
+                getBasketItems()
             } else {
                 repository.incrementQuantity(oldItem)
+                getBasketItems()
             }
 
 

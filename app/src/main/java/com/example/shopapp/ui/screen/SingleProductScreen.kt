@@ -45,7 +45,7 @@ fun SingleProductScreen(
     innerPadding: PaddingValues,
     navController: NavHostController,
     vm: SingleProductViewModel = hiltViewModel(),
-    basketViewModel: BasketViewmodel = hiltViewModel()
+    basketViewModel: BasketViewmodel
 ) {
 
 

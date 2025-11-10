@@ -11,17 +11,22 @@ import androidx.compose.ui.unit.sp
 import com.example.shopapp.ui.utility.formatPrice
 
 @Composable
-fun PriceText(price: Long, fontSize: TextUnit = 22.sp, color: Color = Color.White) {
-
+fun PriceText(
+    price: Long,
+    fontSize: TextUnit = 22.sp,
+    color: Color = Color.White,
+    isColorDark: Boolean = false
+) {
     val price = buildAnnotatedString {
         withStyle(SpanStyle(fontSize = fontSize, color = color)) {
-            append("${formatPrice(price)} ")
+            append(formatPrice(price))
         }
-
-        withStyle(SpanStyle(fontSize = (fontSize / 1.5), color = Color.DarkGray)) {
-            append("Toman")
-        }
+        withStyle(
+            SpanStyle(
+                fontSize = (fontSize / 1.5),
+                color = if (isColorDark) Color.DarkGray else Color.LightGray
+            )
+        ) { append("Toman") }
     }
-
     Text(price)
 }

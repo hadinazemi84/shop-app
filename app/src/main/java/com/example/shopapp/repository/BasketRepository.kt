@@ -14,8 +14,8 @@ class BasketRepository @Inject constructor(private val dao: BasketDao) {
     suspend fun decrementQuantity(oldItem: BasketEntity) = dao.decrementQuantity(oldItem.id)
     suspend fun getBasketItems(): List<BasketEntity> = dao.getAll()
     suspend fun deleteItem(item: BasketEntity) = dao.remove(item)
-    suspend fun getTotalPrice() {
-        dao.getTotalPrice()
+    suspend fun getTotalPrice(id: Long): Long {
+       return dao.getTotalPrice(id)
     }
 
 

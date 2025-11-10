@@ -19,7 +19,7 @@ import com.example.shopapp.vm.BasketViewmodel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavbar(navController: NavHostController, basketVm: BasketViewmodel = hiltViewModel()) {
+fun TopNavbar(navController: NavHostController, basketVm: BasketViewmodel) {
     val basket = basketVm.basketItems.observeAsState()
     TopAppBar(
         title = {

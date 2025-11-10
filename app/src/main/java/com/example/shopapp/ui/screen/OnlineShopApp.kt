@@ -1,14 +1,12 @@
 package com.example.shopapp.ui.screen
 
+import BasketScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -20,15 +18,17 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.shopapp.ui.component.TopNavbar
+import com.example.shopapp.vm.BasketViewmodel
 
 
 @Composable
 fun OnlineShopApp() {
     val navController = rememberNavController()
     val isFullScreen = checkFullScreen(navController)
+    val basketVm = hiltViewModel<BasketViewmodel>()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { if (!isFullScreen) TopNavbar(navController) }) { innerPadding ->
+        topBar = { if (!isFullScreen) TopNavbar(navController, basketVm) }) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
@@ -53,11 +53,11 @@ fun OnlineShopApp() {
                     })
                 ) { backStackEntry ->
                     val productId = backStackEntry.arguments?.getLong("id") ?: 0L
-                    SingleProductScreen(productId, innerPadding, navController)
+                    SingleProductScreen(productId, innerPadding, navController, basketViewModel = basketVm)
                 }
 
                 composable(route = "basket") {
-                    BasketScreen(navController)
+                    BasketScreen(navController, basketVm)
                 }
             }
         }
